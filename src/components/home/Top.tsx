@@ -12,10 +12,12 @@ type Param = string;
 
 export const Top: FC = (props: Props) => {
   const [ activeParm, setActiveParam ] = useState<string>("pokemon");
-  const dispatch = useDispatch<ThunkDispatch>();
+  const dispatch = useDispatch<ThunkDispatch>(); // ThunkDispatch: 함수 또는 객체만
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = useCallback(() => {
-    dispatch( search(activeParm) );
+    const input = inputRef.current as HTMLInputElement;
+    dispatch( search(activeParm, input.value) );
   }, [activeParm]);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export const Top: FC = (props: Props) => {
     <TopStyles>
         <h1 className="title">Search your Pokemon!</h1>
         <div className="search-box">
-            <input type="text" placeholder="Name of Pokemon or Number"/>
+            <input ref={inputRef} type="text" placeholder="Name of Pokemon or Number"/>
             <button onClick={handleClick}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </div>
         <ul className="filter-wrapper">

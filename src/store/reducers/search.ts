@@ -1,12 +1,12 @@
 import {
     SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAILURE,
-    ReturnTypes, PokemonData
+    ReturnTypes, CombinedDatas
 } from "../actions/search";
 
 interface SearchResult {
     limit: number,
     success: boolean,
-    pokemon?: PokemonData
+    pokemon?: CombinedDatas[]
 }
 
 const initialState: SearchResult = {
@@ -19,11 +19,10 @@ const searchReducer = (prevState = initialState, action: ReturnTypes): SearchRes
         case SEARCH_INIT:
             return { ...prevState }
         case SEARCH_SUCCESS:
-            const { results } = action.payload;
             return {
                 ...prevState,
                 success: true,
-                pokemon: { results }
+                pokemon: action.payload
             }
         case SEARCH_FAILURE:
             return {
