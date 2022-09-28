@@ -26,34 +26,52 @@ interface Init {
 const baseURL = "https://pokeapi.co/api/v2/";
 
 const getBasicInfo = async (sort: string = "pokemon", input: string, url?: string) => {
-    let idOrName = input && `/${input}`;
-    let limit = input ? "/?limit=1" : "/?limit=8";
-    const response = url 
-    ? await fetch(url)
-    : await fetch(`${baseURL}${sort}${idOrName.toLowerCase()}${limit}`);
-
+    const idOrName = input ? `/${input.toLowerCase()}` : "";
+    const limitMax = 8;
+    const limit = (input && sort !== "pokemon") ? "/?limit=1" : `/?limit=${limitMax}`;
+    const newUrl = url ? url : `${baseURL}${sort}${idOrName}${limit}`
+    const response = await fetch(newUrl) 
     const data = await response.json();
 
+    if((sort === "ability" || sort === "type") && !input){
+        alert("검색어를 입력해주세요.");
+        return;
+    }
+
     if(input){
+        if(sort === "type" || sort === "ability"){
+            const tempArray = data.pokemon.slice(0, limitMax);
+            // const tempArray = data.pokemon;
+            const results = tempArray.map((item: any) => {
+                return {
+                    name: item.pokemon.name,
+                    id: Number(item.pokemon.url.replace(`${baseURL}pokemon/`, "").replace(/.$/, "")),
+                    url: item.pokemon.url
+                }
+            });
+            return results;
+        }
+        
         const { height, weight, name, id, order } = data; // height unit: decimetres to meters (h / 10), weight unit: hectograms to kilograms ( w / 10 )
         const abilities = data.abilities.map((item: any) => item.ability);
         const stats = data.stats.map((item: any) => { return { name: item.base_stat, stat: item.stat.name } });
         const types = data.types.map((item: any) => item.type.name);
+
         return {
-            name,
-            order, 
-            id,
+            name, order, id,
             img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
             height: `${(height / 10)}m`, 
             weight: `${(weight / 10)}kg`,
             abilities, stats, types
-        }
+        };
     }else{
+        console.log("2. data: ", newUrl, data);
+
         for(const listItem of data.results){
             const id = listItem.url.replace(`${baseURL}pokemon/`, "").replace(/.$/, "");
             listItem.id = Number(id);
         }
-        return data.results
+        return data.results;
     }
 }
 
@@ -80,14 +98,18 @@ const getPokemonDatas = async (param: string, url?: string): Promise<Pokemon> =>
     const stats = data.stats.map((item: any) => { return { name: item.base_stat, stat: item.stat.name } });
     const types = data.types.map((item: any) => item.type.name);
     return { 
-        name, 
-        id, 
+        name, order, id,
         img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`, 
-        order, 
         height: `${(height / 10)}m`, 
         weight: `${(weight / 10)}kg`,
         abilities, stats, types
     }
+}
+
+const fetchUrl = async (url: string): Promise<any> => {
+    const resp = await fetch(url);
+    const data = await resp.json();
+    return data;
 }
 
 interface Spicies {
@@ -97,12 +119,18 @@ interface Spicies {
 }
 
 const getSpecies = async (param: number): Promise<Spicies> => {
-    const speciesResp = await fetch(`${baseURL}pokemon-species/${param}`);
-    const data = await speciesResp.json();
+    let data = await fetchUrl(`${baseURL}pokemon-species/${param}`);
+
+    if(!data.evolution_chain)
+        data = await fetchUrl(data.evolves_from_species.url);
+
+    console.log("data:", `${baseURL}pokemon-species/${param}`, data);
+    
     const category = data.genera.filter((item: any) => item.language.name === "en");
-    const descriptions = data.flavor_text_entries.filter((item: any) => item.language.name === "en" && item.version.name === "red");
+    const descriptions = data.flavor_text_entries.filter((item: any) => item.language.name === "en");
+
     return {
-        ev_chain_url: data.evolution_chain.url,
+        ev_chain_url: data.evolution_chain ? data.evolution_chain.url : data.evolves_from_species.url,
         category: category[0].genus.replace(" Pokémon", ""),
         descriptions: descriptions[0].flavor_text.replace(/\n/g, " ").replace(/\f/g, " ")
     }
@@ -118,7 +146,7 @@ const getEvolutionChain = async (url: string): Promise<Evolution> => {
     const newStr = (str: string) => str.replace(`${baseURL}pokemon-species/`, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/").replace(/.$/, ".png");
     const ev_chain = [];
 
-    if(chain.evolves_to.length > 0){
+    if(chain && chain.evolves_to.length > 0){
         ev_chain.push({ name: chain.species.name, img: newStr(chain.species.url) });
         ev_chain.push({ name: chain.evolves_to[0].species.name, img: newStr(chain.evolves_to[0].species.url) });
         if(chain.evolves_to[0].evolves_to.length > 0){
@@ -149,15 +177,18 @@ const createCard = async (sort: string, input: string): Promise<CombinedDatas[]>
     let pokemon, species, ev;
     let lists = await getBasicInfo(sort, input);
 
-    if(input){
+    console.log("lists: ", lists);
+    
+    if(sort === "pokemon" && input){
         species = await getSpecies(lists.id);
         ev = await getEvolutionChain(species.ev_chain_url);
-        return new Array({
+        pokemon = {
             ...lists,
             ev_chain:       ev.ev_chain,
             category:       species.category,
             descriptions:   species.descriptions
-        });
+        }
+        pokemons.push(pokemon);
     }else{
         for(const listItem of lists){
             const basic = await getPokemonDatas(listItem.id);
@@ -179,8 +210,9 @@ const createCard = async (sort: string, input: string): Promise<CombinedDatas[]>
             }
             pokemons.push(pokemon);
         }
-        return pokemons;
     }
+    console.log("pokemons", pokemons);
+    return pokemons;
 }
 
 export type ReturnTypes = ReturnSearchInit | ReturnSearchSuccess | ReturnSearchFailure;
@@ -193,18 +225,17 @@ export interface ThunkDispatch {        // 함수 타이핑 (오버로딩: 같�
 type ThunkAction = (dispatch: ThunkDispatch) => void;
 
 export const search = (sort: string, input: string) => async (dispatch: Dispatch<ReturnTypes>) => {
-    console.log("sort: ", sort);
-    dispatch({ type: SEARCH_INIT });
-    try{
-        const data = await createCard(sort, input);
-        console.log("data", data);
-        dispatch({
-            type: SEARCH_SUCCESS,
-            payload: data
-        });
-    }catch(e){
-        dispatch({
-            type: SEARCH_FAILURE
-        });
-    }
+    const data = await createCard(sort, input);
+    // dispatch({ type: SEARCH_INIT });
+    // try{
+    //     const data = await createCard(sort, input);
+    //     dispatch({
+    //         type: SEARCH_SUCCESS,
+    //         payload: data
+    //     });
+    // }catch(e){
+    //     dispatch({
+    //         type: SEARCH_FAILURE
+    //     });
+    // }
 }
