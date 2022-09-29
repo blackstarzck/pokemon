@@ -1,19 +1,20 @@
 import { ReturnCombinedDatas } from "../../api";
 import {
     SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAILURE,
-    ReturnTypes
+    SearchReturnTypes
 } from "../actions/search";
 
 interface SearchResult {
     success: boolean,
-    pokemon?: ReturnCombinedDatas
+    pokemon: ReturnCombinedDatas
 }
 
 const initialState: SearchResult = {
-    success: false
+    success: false,
+    pokemon: []
 };
 
-const searchReducer = (prevState = initialState, action: ReturnTypes): SearchResult => {
+const searchReducer = (prevState = initialState, action: SearchReturnTypes): SearchResult => {
     switch(action.type){
         case SEARCH_INIT:
             return { ...prevState }

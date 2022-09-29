@@ -32,6 +32,7 @@ export const SortStyles = styled.div`
         overflow: hidden;
         background-color: #ffffff;
         transition: all .2s ease-in-out;
+        z-index: 5;
 
         li.option {
             width: 100%;

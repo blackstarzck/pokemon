@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { SortStyles } from './Sort.elements';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretDown } from '@fortawesome/pro-solid-svg-icons'
@@ -6,7 +6,10 @@ import { faCaretDown } from '@fortawesome/pro-solid-svg-icons'
 export interface Props {
 }
 
-export function Sort (props: Props) {
+export const Sort: FC = memo((props: Props) => {
+
+    console.log("%c■■■■■■■■■■■■■■■■■■■■■ 렌더: Sort ■■■■■■■■■■■■■■■■■■■■■", "color: gray");
+
     return (
         <SortStyles>
             <span className="head">Sort</span>
@@ -24,4 +27,4 @@ export function Sort (props: Props) {
             </div>
         </SortStyles>
     );
-}
+});

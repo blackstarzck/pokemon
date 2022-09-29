@@ -6,7 +6,6 @@ import thunk from "redux-thunk";
 const initialState = {};
 
 const firstMiddleaware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
-    console.log("미들웨어", action);
     next(action);
 }
 

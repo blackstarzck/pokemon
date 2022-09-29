@@ -1,33 +1,43 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import { CardStyles } from './Cards.elements';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNotch } from '@fortawesome/pro-regular-svg-icons';
+import { CombinedDatas } from '../../api';
+import { animateCards, setDefaultPosition } from '../../gsap';
 
 interface Props {
-    loaded: boolean
+    loaded: boolean,
+    detail: CombinedDatas,
+    delay: number
 }
 
 export const Card: FC<Props> = props => {
+    const cardRef = useRef<HTMLElement>(null);
 
-    if(!props.loaded){
+    useEffect(() => {
+        const card = cardRef.current as HTMLElement;
+        console.log("로드완료: ", props.detail.name, props.detail.id);
+        animateCards(card, props.delay);
+    }, [props.detail]);
+
+    if(!props.detail){
         return(
-            <CardStyles loaded={props.loaded} >
+            <CardStyles>
                 <div className="loading"></div>
             </CardStyles>
         );
     }
     return (
-        <CardStyles loaded={props.loaded} >
+        <CardStyles ref={cardRef} loaded={props.detail} >
             <div className="img-box">
-                <img src="./image/test.png" alt="pokemon" />
+                <img src={props.detail.img} alt={props.detail.name} />
             </div>
             <div className="descr-box">
-                <div className="number">#025</div>
-                <div className="name">Pikachu</div>
+                <div className="number">{props.detail.id}</div>
+                <div className="name">{props.detail.name}</div>
                 <ul className="type-wrapper">
-                    <li className="type electric">Electric</li>
+                    { props.detail.types.map((item: any, i ) => <li key={i} className={`type ${item}`}>{item}</li> )}
                 </ul>
             </div>
         </CardStyles>
     );
 }
+

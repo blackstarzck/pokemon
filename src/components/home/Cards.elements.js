@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 
 export const CardStyles = styled.li`
+    opacity: 0;
     width: 100%;
     height: 349px;
     border-radius: 5px;
@@ -63,34 +64,40 @@ export const CardStyles = styled.li`
         .name {
             font-size: ${ props => props.theme.font.mainName };
             font-weight: 800;
+            text-transform: capitalize;
             margin-bottom: 15px;
         }
-        .type {
-            width: calc((100% / 2) - 18px);
-            height: 20px;
-            border-radius: 5px;
-            font-size: ${ props => props.theme.font.descr };
-            line-height: 20px;
-            text-align: center;
+        .type-wrapper {
+            display: flex;
+            justify-content: space-between;
+            .type {
+                width: calc((100% / 2) - 10px);
+                height: 25px;
+                line-height: 25px;
+                border-radius: 5px;
+                font-size: ${ props => props.theme.font.descr };
+                text-align: center;
+                color: #ffffff;
 
-            &.bug       { background-color: #1DE9B6 }
-            &.dragon    { background-color: #FF9100 }
-            &.Fairy     { background-color: #C6FF00 }
-            &.fire      { background-color: #FF3D00 }
-            &.ghost     { background-color: #D500F9 }
-            &.ground    { background-color: #4E342E }
-            &.normal    { background-color: #ECECEC; color: #444444 }
-            &.psychic   { background-color: #F50057 }
-            &.steel     { background-color: #37474F }
-            &.dark      { background-color: #424242 }
-            &.electric  { background-color: #FFEA00; color: #444444 }
-            &.fighting  { background-color: #8D6E63 }
-            &.flying    { background-color: #00B0FF }
-            &.grass     { background-color: #00E676 }
-            &.ice       { background-color: #84FFFF; color: #444444 }
-            &.poison    { background-color: #651FFF }
-            &.rock      { background-color: #3E2723 }
-            &.water     { background-color: #2979FF }
+                &.bug       { background-color: ${ props => props.theme.symbols.bug } }
+                &.dragon    { background-color: ${ props => props.theme.symbols.dragon } }
+                &.Fairy     { background-color: ${ props => props.theme.symbols.Fairy } }
+                &.fire      { background-color: ${ props => props.theme.symbols.fire } }
+                &.ghost     { background-color: ${ props => props.theme.symbols.ghost } }
+                &.ground    { background-color: ${ props => props.theme.symbols.ground } }
+                &.normal    { background-color: ${ props => props.theme.symbols.normal }; color: #444444 }
+                &.psychic   { background-color: ${ props => props.theme.symbols.psychic } }
+                &.steel     { background-color: ${ props => props.theme.symbols.steel } }
+                &.dark      { background-color: ${ props => props.theme.symbols.dark } }
+                &.electric  { background-color: ${ props => props.theme.symbols.electric }; color: #444444 }
+                &.fighting  { background-color: ${ props => props.theme.symbols.fighting } }
+                &.flying    { background-color: ${ props => props.theme.symbols.flying } }
+                &.grass     { background-color: ${ props => props.theme.symbols.grass } }
+                &.ice       { background-color: ${ props => props.theme.symbols.ice }; color: #444444 }
+                &.poison    { background-color: ${ props => props.theme.symbols.poison } }
+                &.rock      { background-color: ${ props => props.theme.symbols.rock } }
+                &.water     { background-color: ${ props => props.theme.symbols.water } }
+            }
         }
     }
 `;

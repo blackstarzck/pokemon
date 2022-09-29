@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/pro-solid-svg-icons'
 import { useDispatch } from "react-redux";
 import { search, ThunkDispatch } from '../../store/actions/search';
+import setLoadingStatus from '../../store/actions/loading';
 
 export interface Props {
 }
@@ -17,13 +18,11 @@ export const Top: FC = (props: Props) => {
 
   const handleSearch = useCallback(() => {
     const input = inputRef.current as HTMLInputElement;
-    dispatch( search(filter, input.value) );
+    if((filter !== "pokemon" && input.value) || filter === "pokemon"){
+      dispatch( setLoadingStatus(true) );
+      dispatch( search(filter, input.value) );
+    }
   }, [filter]);
-
-  const setParam = (e: React.MouseEvent<HTMLElement>) => {
-    const filterItem = e.currentTarget.dataset.param as Param;
-    setFilter(filterItem);
-  }
 
   useEffect(() => {
     const fItems = document.querySelectorAll(".filter-item");
@@ -46,9 +45,9 @@ export const Top: FC = (props: Props) => {
             <button onClick={handleSearch}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </div>
         <ul className="filter-wrapper">
-            <li onClick={setParam} data-param="pokemon" className="filter-item">Pokemon</li>
-            <li onClick={setParam} data-param="ability" className="filter-item">Ability</li>
-            <li onClick={setParam} data-param="type" className="filter-item">Type</li>
+            <li onClick={() => setFilter("pokemon")} data-param="pokemon" className="filter-item">Pokemon</li>
+            <li onClick={() => setFilter("ability")} data-param="ability" className="filter-item">Ability</li>
+            <li onClick={() => setFilter("type")} data-param="type" className="filter-item">Type</li>
         </ul>
     </TopStyles>
   );

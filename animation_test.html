@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            color: #333;
+            padding: 10px 24px;
+        }
+
+        h1 {
+            font-weight: normal;
+            font-size: 24px;
+        }
+
+        .group {
+            width: 600px;
+            height: 600px;
+            padding: 4px;
+            background: #ddd;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .box {
+            margin: 4px;
+            padding: 8px;
+            font-size: 18px;
+            width: 126px;
+            height: 126px;
+        }
+
+        .box:nth-child(1) {
+            background: rgba(63, 81, 181, 0.6);
+        }
+
+        .box:nth-child(2) {
+            background: rgba(103, 58, 183, 0.6);
+        }
+
+        .box:nth-child(3) {
+            background: rgba(33, 150, 243, 0.6);
+        }
+
+        .box:nth-child(4) {
+            background: rgba(0, 188, 212, 0.6);
+        }
+
+        .group.reorder {
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="group">
+        <div class="box box1" id="box1">1</div>
+        <div class="box box2">2</div>
+        <div class="box box3">3</div>
+        <div class="box box4">4</div>
+    </div>
+
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenMax.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.2/gsap.min.js"
+        integrity="sha512-gsEItzcNkWxfxHjr4BaEZAd9YuRWYjxnj7c/yukcZ0/nWehUb5TjJNyyv1ApCU2DFH/qgw+stFZHPOKnoQnIuQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var group = document.querySelector(".group");
+        var nodes = document.querySelectorAll(".box");
+        var total = nodes.length;
+        var ease = Power1.easeInOut;
+        var boxes = [];
+
+        for (var i = 0; i < total; i++) {
+
+            var node = nodes[i];
+
+            // Initialize transforms on node
+            gsap.set(node, {
+                x: 0
+            });
+            var x =  gsap.getProperty(node, "x");
+            var y =  gsap.getProperty(node, "y");
+
+            boxes[i] = {
+                transform:  { x, y },
+                x: node.offsetLeft,
+                y: node.offsetTop,
+                node
+            };
+
+            console.log(boxes);
+        }
+
+        group.addEventListener("mouseenter", layout);
+        group.addEventListener("mouseleave", layout);
+
+        function layout() {
+
+            group.classList.toggle("reorder");
+
+            for (var i = 0; i < total; i++) {
+
+                var box = boxes[i];
+
+                var lastX = box.x;
+                var lastY = box.y;
+
+                box.x = box.node.offsetLeft;
+                box.y = box.node.offsetTop;
+
+                // Continue if box hasn't moved
+                if (lastX === box.x && lastY === box.y) continue;
+
+                // Reversed delta values taking into account current transforms
+                var x = box.transform.x + lastX - box.x;
+                var y = box.transform.y + lastY - box.y;
+
+                // Tween to 0 to remove the transforms
+                TweenLite.fromTo(box.node, 0.5, {
+                    x,
+                    y
+                }, {
+                    x: 0,
+                    y: 0,
+                    ease
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

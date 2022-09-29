@@ -47,7 +47,7 @@ const symbols = {
     grass:      "#00E676",
     ice:        "#84FFFF",
     poison:     "#651FFF",
-    rock:       "#3E2723",
+    rock:       "#938E8E",
     water:      "#2979FF"
 }
 

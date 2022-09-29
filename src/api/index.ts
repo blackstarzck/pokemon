@@ -1,5 +1,7 @@
 const baseURL = "https://pokeapi.co/api/v2/";
 
+// pokeapi에서 제공하는 데이터는 최대 20개 까지입니다.
+
 interface Init {
     name: string,
     url?: string,
@@ -28,7 +30,7 @@ interface Pokemon extends Init {
         if(!resp.ok) console.log("[error] fetch response status: ", resp.status);
 
         const data = await resp.json();
-        console.log("fetchUrl data: ", data);
+        // console.log("fetchUrl data: ", data);
         return data;
     }catch(e){
         console.log("fetchUrl error: ", e);
@@ -59,6 +61,7 @@ const getBasicInfo = async (filter: string = "pokemon", input: string, url?: str
     if((filter === "ability" || filter === "type") && !input) return false;
 
     if(input){
+        if(filter === "ability" && input) input = input.replace(/[\s]/g, "-");
         if(filter === "type" || filter === "ability"){
             const tempArray = data.pokemon.slice(0, limitMax);
             results = tempArray.map((item: any) => ({
@@ -177,7 +180,7 @@ export interface CombinedDatas {
     descriptions: string
 };
 
-export type ReturnCombinedDatas = CombinedDatas[] | boolean;
+export type ReturnCombinedDatas = CombinedDatas[];
 
 /**
  * [설명] 포켓몬의 모든 정보를 하나로 모아 사용자의 검색요청에 따라 카드를 구성하는 객체리터럴을 생성해주는 함수입니다.
@@ -185,12 +188,12 @@ export type ReturnCombinedDatas = CombinedDatas[] | boolean;
  * @param input 
  * @returns 
  */
-export const createCard = async (filter: string, input: string): Promise<ReturnCombinedDatas> => {
+const createCard = async (filter: string, input: string): Promise<any> => {
     const pokemons = [];
     let pokemon, species, ev;
     let lists = await getBasicInfo(filter, input);
 
-    console.log("lists: ", lists);
+    // console.log("lists: ", lists);
     if(!lists) return false;
     
     if(filter === "pokemon" && input){ // 단일 결과
@@ -198,9 +201,10 @@ export const createCard = async (filter: string, input: string): Promise<ReturnC
         ev      = await getEvolutionChain(species.ev_chain_url);
         pokemon = {
             ...lists,
-            ev_chain:       ev.ev_chain,
-            category:       species.category,
-            descriptions:   species.descriptions
+            id              : addZeros(lists.id),
+            ev_chain        : ev.ev_chain,
+            category        : species.category,
+            descriptions    : species.descriptions
         }
         pokemons.push(pokemon);
     }else{
@@ -209,22 +213,37 @@ export const createCard = async (filter: string, input: string): Promise<ReturnC
             species     =   await getSpecies(listItem.id);
             ev          =   await getEvolutionChain(species.ev_chain_url);
             pokemon = {
-                name:           basic.name,
-                id:             basic.id,
-                order:          basic.order,
-                img:            basic.img,
-                height:         basic.height,
-                weight:         basic.weight,
-                abilities:      basic.abilities,
-                stats:          basic.stats,
-                types:          basic.types,
-                ev_chain:       ev.ev_chain,
-                category:       species.category,
-                descriptions:   species.descriptions
+                name        : basic.name,
+                id          : addZeros(basic.id),
+                order       : basic.order,
+                img         : basic.img,
+                height      : basic.height,
+                weight      : basic.weight,
+                abilities   : basic.abilities,
+                stats       : basic.stats,
+                types       : basic.types,
+                ev_chain    : ev.ev_chain,
+                category    : species.category,
+                descriptions: species.descriptions
             }
             pokemons.push(pokemon);
         }
     }
-    console.log("pokemons", pokemons);
+    console.log("pokemon datas", pokemons);
     return pokemons;
 }
+
+const addZeros = (param: number) => {
+    let id = String(param);
+    let newId = id;
+    let length: number = 0;
+
+    if(id.length === 1) length = 2;
+    if(id.length === 2) length = 1;
+
+    for(let i = 0; i < length; i++) newId = "0" + newId;
+    
+    return `#${newId}`;
+}
+
+export default createCard;
