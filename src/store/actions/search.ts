@@ -1,6 +1,5 @@
 import { Dispatch } from "redux";
 import createCard, { ReturnCombinedDatas } from "../../api";
-import setLoadingStatus from "./loading";
 
 export const SEARCH_INIT = "search/SEARCH_INIT" as const;
 export const SEARCH_SUCCESS = "search/SEARCH_SUCCESS" as const;
