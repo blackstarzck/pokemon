@@ -1,6 +1,7 @@
+import { ReturnCombinedDatas } from "../../api";
 import {
     SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAILURE,
-    ReturnTypes, ReturnCombinedDatas
+    ReturnTypes
 } from "../actions/search";
 
 interface SearchResult {
