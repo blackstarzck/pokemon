@@ -11,39 +11,39 @@ export interface Props {
 type Param = string;
 
 export const Top: FC = (props: Props) => {
-  const [ activeParm, setActiveParam ] = useState<string>("pokemon");
+  const [ filter, setFilter ] = useState<string>("pokemon");
   const dispatch = useDispatch<ThunkDispatch>(); // ThunkDispatch: 함수 또는 객체만
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleClick = useCallback(() => {
+  const handleSearch = useCallback(() => {
     const input = inputRef.current as HTMLInputElement;
-    dispatch( search(activeParm, input.value) );
-  }, [activeParm]);
+    dispatch( search(filter, input.value) );
+  }, [filter]);
+
+  const setParam = (e: React.MouseEvent<HTMLElement>) => {
+    const filterItem = e.currentTarget.dataset.param as Param;
+    setFilter(filterItem);
+  }
 
   useEffect(() => {
     const fItems = document.querySelectorAll(".filter-item");
     fItems.forEach((item) => {
-      if(item.getAttribute("data-param") === activeParm){
+      if(item.getAttribute("data-param") === filter){
         item.classList.add("active");
       }else{
         item.classList.remove("active");
       }
     });
-  }, [activeParm]);
+  }, [filter]);
 
-  const setParam = (e: React.MouseEvent<HTMLElement>) => {
-    const activeParam = e.currentTarget.dataset.param as Param;
-    setActiveParam(activeParam);
-  }
-
-  console.log("렌더");
+  console.log("%c■■■■■■■■■■■■■■■■■■■■■ 렌더: Top ■■■■■■■■■■■■■■■■■■■■■", "color: gray");
 
   return (
     <TopStyles>
         <h1 className="title">Search your Pokemon!</h1>
         <div className="search-box">
             <input ref={inputRef} type="text" placeholder="Name of Pokemon or Number"/>
-            <button onClick={handleClick}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
+            <button onClick={handleSearch}><FontAwesomeIcon icon={faMagnifyingGlass}/></button>
         </div>
         <ul className="filter-wrapper">
             <li onClick={setParam} data-param="pokemon" className="filter-item">Pokemon</li>

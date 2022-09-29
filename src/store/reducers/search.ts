@@ -1,16 +1,14 @@
 import {
     SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAILURE,
-    ReturnTypes, CombinedDatas
+    ReturnTypes, ReturnCombinedDatas
 } from "../actions/search";
 
 interface SearchResult {
-    limit: number,
     success: boolean,
-    pokemon?: CombinedDatas[]
+    pokemon?: ReturnCombinedDatas
 }
 
 const initialState: SearchResult = {
-    limit: 8,
     success: false
 };
 
