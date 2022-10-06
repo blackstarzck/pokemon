@@ -1,9 +1,6 @@
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, MiddlewareAPI, Dispatch, AnyAction, applyMiddleware, compose } from "redux";
 import rootReducer from "./reducers";
-import thunk from "redux-thunk";
-
-const initialState = {};
 
 const firstMiddleaware = (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: any) => {
     next(action);
@@ -29,6 +26,8 @@ const enhancer = composeWithDevTools(
 
 // const store = createStore(rootReducer, initialState, applyMiddleware(thunk));
 const store = createStore(rootReducer, enhancer);
+
+// console.log("get state: ", store.getState());
 
 
 export default store;

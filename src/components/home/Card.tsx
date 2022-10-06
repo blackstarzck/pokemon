@@ -2,6 +2,9 @@ import React, { FC, useEffect, useRef } from 'react';
 import { CardStyles } from './Cards.elements';
 import { CombinedDatas } from '../../api';
 import { animateCards, setDefaultPosition } from '../../gsap';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reducers';
+import { stat } from 'fs';
 
 interface Props {
     loaded: boolean,
@@ -11,12 +14,17 @@ interface Props {
 
 export const Card: FC<Props> = props => {
     const cardRef = useRef<HTMLElement>(null);
+    const sort = useSelector((state: RootState) => state.sort);
 
     useEffect(() => {
         const card = cardRef.current as HTMLElement;
-        console.log("로드완료: ", props.detail.name, props.detail.id);
+        sort.isOpen || animateCards(card, props.delay);
+    }, [sort]);
+
+    useEffect(() => {
+        const card = cardRef.current as HTMLElement;
         animateCards(card, props.delay);
-    }, [props.detail]);
+    }, []);
 
     if(!props.detail){
         return(

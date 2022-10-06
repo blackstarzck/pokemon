@@ -15,7 +15,6 @@ export type LoadingReturnType = LoadingPending | LoadingFinished;
 const setLoadingStatus = (param: boolean): LoadingReturnType => {
     const type = param ? LOADING_PENDING : LOADING_FINISHED;
     const payload = param;
-    console.log("setLoadingStatus: ", type, payload);
     return{ type, payload };
 }
 

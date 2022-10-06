@@ -1,3 +1,5 @@
+import { iteratorSymbol } from "immer/dist/internal";
+
 const baseURL = "https://pokeapi.co/api/v2/";
 
 // pokeapi에서 제공하는 데이터는 최대 20개 까지입니다.
@@ -15,7 +17,7 @@ interface Pokemon extends Init {
     weight: string,
     abilities: Array<{ name: string, url: string }>,
     stats: Array<{ name: string, stat: string }>,
-    types: Array<object>
+    types: string[]
 }
 
 /**
@@ -144,6 +146,7 @@ const getSpecies = async (param: number): Promise<Spicies> => {
 interface Evolution {
     ev_chain: Array<object>,
 }
+
 /**
  * [설명] 포켓몬의 진화정보를 받아옵니다.
  * @param url   : getSpecies 함수에서 받아온 진화정보 url 입니다.
@@ -165,6 +168,23 @@ const getEvolutionChain = async (url: string): Promise<Evolution> => {
     return { ev_chain };
 }
 
+interface Ability {
+    ability: string,
+    description: string
+}
+
+export const getAbilityDescr = async (id: string): Promise<Ability> => {
+    const data = await fetchUrl(`https://pokeapi.co/api/v2/ability/${id}`);
+    const description = data.effect_entries.filter((list: any) => list.language.name === "en");
+    return { ability: data.name, description: description[0].effect };
+}
+
+export const getWeekTypes = async (id: string): Promise<any> => {
+    const data = await fetchUrl(`https://pokeapi.co/api/v2/type/${id}`);
+    const weekness = data.damage_relations.double_damage_to.map((item: any) => item.name);
+    return weekness;
+}
+
 export interface CombinedDatas {
     name: string,
     id: number,
@@ -176,8 +196,9 @@ export interface CombinedDatas {
     weight: string,
     abilities: { name: string, url: string }[],
     stats: { name: string, stat: string }[],
-    types: object[],
-    descriptions: string
+    types: string[],
+    descriptions: string,
+    weekness?: string[]
 };
 
 export type ReturnCombinedDatas = CombinedDatas[];
@@ -190,28 +211,51 @@ export type ReturnCombinedDatas = CombinedDatas[];
  */
 const createCard = async (filter: string, input: string): Promise<any> => {
     const pokemons = [];
-    let pokemon, species, ev;
+    let pokemon, species, ev, weekness, newArray,
+        abName = "", abEffect = "", oppTypes = [];
     let lists = await getBasicInfo(filter, input);
 
-    // console.log("lists: ", lists);
+    console.log("★★lists: ", lists);
     if(!lists) return false;
+    if(filter === "ability" && input){
+        const { ability, description } = await getAbilityDescr(input);
+        abName      = ability;
+        abEffect    = description;
+    }
+    if(filter === "type" && input){
+        oppTypes = await getWeekTypes(input);
+        console.log("작동함?", input, oppTypes);
+    }
     
     if(filter === "pokemon" && input){ // 단일 결과
-        species = await getSpecies(lists.id);
-        ev      = await getEvolutionChain(species.ev_chain_url);
+        let tempArray: string[] = [];
+        species     = await getSpecies(lists.id);
+        ev          = await getEvolutionChain(species.ev_chain_url);
+        for(const type of lists.types){
+            weekness = await getWeekTypes(type);
+            tempArray = [ ...tempArray, ...weekness ];
+        }
+        newArray = tempArray.filter((item, i) => tempArray.indexOf(item) === i);
         pokemon = {
             ...lists,
             id              : addZeros(lists.id),
             ev_chain        : ev.ev_chain,
             category        : species.category,
-            descriptions    : species.descriptions
+            descriptions    : species.descriptions,
+            weekness        : newArray
         }
         pokemons.push(pokemon);
     }else{
         for(const listItem of lists){ // 복수 결과
-            const basic =   await getPokemonDatas(listItem.id);
-            species     =   await getSpecies(listItem.id);
-            ev          =   await getEvolutionChain(species.ev_chain_url);
+            let tempArray: string[] = [];
+            const basic = await getPokemonDatas(listItem.id);
+            species     = await getSpecies(listItem.id);
+            ev          = await getEvolutionChain(species.ev_chain_url);
+            for(const type of basic.types){
+                weekness = await getWeekTypes(type);
+                tempArray = [ ...tempArray, ...weekness ];
+            }
+            newArray = tempArray.filter((item, i) => (tempArray.indexOf(item) === i));
             pokemon = {
                 name        : basic.name,
                 id          : addZeros(basic.id),
@@ -224,13 +268,14 @@ const createCard = async (filter: string, input: string): Promise<any> => {
                 types       : basic.types,
                 ev_chain    : ev.ev_chain,
                 category    : species.category,
-                descriptions: species.descriptions
+                descriptions: species.descriptions,
+                weekness    : newArray,
             }
             pokemons.push(pokemon);
         }
     }
-    console.log("pokemon datas", pokemons);
-    return pokemons;
+    console.log("pokemon datas", { pokemons, abName, abEffect, oppTypes });
+    return { pokemons, abName, abEffect, oppTypes };
 }
 
 const addZeros = (param: number) => {

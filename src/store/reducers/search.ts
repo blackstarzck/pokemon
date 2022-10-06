@@ -1,4 +1,3 @@
-import { ReturnCombinedDatas } from "../../api";
 import {
     SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAILURE,
     SearchReturnTypes
@@ -6,15 +5,16 @@ import {
 
 interface SearchResult {
     success: boolean,
-    pokemon: ReturnCombinedDatas
+    data: any
 }
 
 const initialState: SearchResult = {
     success: false,
-    pokemon: []
+    data: []
 };
 
 const searchReducer = (prevState = initialState, action: SearchReturnTypes): SearchResult => {
+    // console.log("searchReducer: ", action);
     switch(action.type){
         case SEARCH_INIT:
             return { ...prevState }
@@ -22,7 +22,7 @@ const searchReducer = (prevState = initialState, action: SearchReturnTypes): Sea
             return {
                 ...prevState,
                 success: true,
-                pokemon: action.payload
+                data: action.payload
             }
         case SEARCH_FAILURE:
             return {

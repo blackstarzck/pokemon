@@ -1,6 +1,5 @@
 import { combineReducers } from "redux";
 import sortReducer from "./sort";
-import selectBoxReducer from "./selectbox";
 import searchReducer from "./search";
 import loadingReducer from "./loading";
 import filterReducer from "./filter";
@@ -8,7 +7,6 @@ import filterReducer from "./filter";
 const rootReducer = combineReducers({
     filter: filterReducer,
     sort: sortReducer,
-    selectBox: selectBoxReducer,
     search: searchReducer,
     loading: loadingReducer
 });

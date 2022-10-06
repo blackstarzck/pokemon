@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const SortStyles = styled.div`
     display: flex;
@@ -19,12 +19,18 @@ export const SortStyles = styled.div`
             border: 1px solid ${ props => props.theme.colors.gray3 };
             border-radius: 5px;
             cursor: pointer;
+
+            svg {
+                transition: all .2s ease;
+                transform: ${props => props.isOpen ? "rotate(-180deg)" : "rotate(0deg)"}
+            }
         }
     }
 
     ul.option-wrapper {
         width: 100%;
-        height: 122px;
+        visibility: ${ props => props.isOpen ? "visible" : "hidden"};
+        height: ${ props => props.isOpen ? "122px" : 0};
         border: 1px solid ${ props => props.theme.colors.gray3 };
         position: absolute;
         top: 33px; left: 0;
