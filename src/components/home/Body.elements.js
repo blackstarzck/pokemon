@@ -26,6 +26,24 @@ export const BodyStyles = styled.section`
             @media screen and (max-width: 410px) {
                 grid-template-columns: repeat(1, 1fr);
             }
+
+            .loading {
+                width: 100px;
+
+                .square {
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 5px;
+                    background-color: ${ props => props.theme.colors.primary };
+                    animation: loadingG 1.5s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+                }
+            }
         }
+    }
+
+    @keyframes loadingG {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(70px, 0) rotate(360deg); }
+        100% { transform: translate(0, 0) rotate(0deg); }
     }
 `;

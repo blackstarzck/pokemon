@@ -9,10 +9,10 @@ type Order = { order: number, name: string };
 
 
 const sortToggle = (data: { type: string, sortType: string | undefined, pData: { pokemons: Order[] }}) => (dispatch: Dispatch<any>) => {
-    let sortedArray = data.pData.pokemons;
-
     dispatch(data);
     if(!data.pData.pokemons) return false;
+
+    let sortedArray = [...data.pData.pokemons];
 
     if(data.sortType === LN) sortedArray.sort((a: Order, b: Order): number =>  a.order - b.order)
     if(data.sortType === HN) sortedArray.sort((a: Order, b: Order): number =>  b.order - a.order)

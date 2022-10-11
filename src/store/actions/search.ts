@@ -27,7 +27,7 @@ export interface ThunkDispatch {        // 함수 타이핑 (오버로딩: 같�
 }
 type ThunkAction = (dispatch: ThunkDispatch) => void;
 
-export const search = (filter: string, input: string) => async (dispatch: Dispatch<any>) => {
+export const search = (filter: string, input?: string) => async (dispatch: Dispatch<any>) => {
     // const data = await createCard(filter, input);
     dispatch({ type: LOADING_PENDING });
     dispatch({ type: SEARCH_INIT });

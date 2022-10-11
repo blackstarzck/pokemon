@@ -1,10 +1,9 @@
 import React, { FC, useEffect, useRef } from 'react';
 import { CardStyles } from './Cards.elements';
 import { CombinedDatas } from '../../api';
-import { animateCards, setDefaultPosition } from '../../gsap';
+import { animateCards } from '../../gsap';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
-import { stat } from 'fs';
 
 interface Props {
     loaded: boolean,
@@ -24,6 +23,8 @@ export const Card: FC<Props> = props => {
     useEffect(() => {
         const card = cardRef.current as HTMLElement;
         animateCards(card, props.delay);
+
+        console.log(props.detail.id + " 로드~!");
     }, []);
 
     if(!props.detail){

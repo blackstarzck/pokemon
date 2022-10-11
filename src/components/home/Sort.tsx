@@ -41,13 +41,14 @@ export const Sort: FC = memo(props => {
         }
     }, [sort.isOpen]);
 
+    console.log("data: ", data.pokemons);
     console.log("%c■■■■■■■■■■■■■■■■■■■■■ 렌더: Sort ■■■■■■■■■■■■■■■■■■■■■", "color: gray");
 
     return (
-        <SortStyles isOpen={sort.isOpen}>
+        <SortStyles isLoaded={data.pokemons?.length > 0 ? true : false} isOpen={sort.isOpen}>
             <span className="head">Sort</span>
             <div className="select-box">
-                <div onClick={(e) => toggle(e)} className="selected">
+                <div onClick={(e) => (data.pokemons?.length > 0) && toggle(e)} className="selected">
                     <span ref={selected}>Lowest Number</span>
                     <FontAwesomeIcon icon={faCaretDown} />
                 </div>

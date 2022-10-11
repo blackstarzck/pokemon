@@ -6,8 +6,8 @@ const colors = {
     gray2:      "#e0e0e0",
     gray3:      "#C6C6C6",
     gray4:      "#858585",
-    expInner:   "#FF4D4D",
-    expOuter:   "#77FF74",
+    expRed:     "#FF4D4D",
+    expGreen:   "#77FF74",
     primary:    "#0085FF"
 }
 

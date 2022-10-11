@@ -6,7 +6,7 @@ export const CardStyles = styled.li`
     height: 349px;
     border-radius: 5px;
     background-color: ${ props => props.theme.colors.gray1 };
-    cursor: pointer;   
+    cursor: pointer;
 
     ${ props => !props.loaded && css`
         display: flex;

@@ -50,7 +50,7 @@ interface Pokemon extends Init {
  * 2. 데이터가 하나 이상일때(객체리터럴)
  * 3. 단일 객체(객체)
  */
-const getBasicInfo = async (filter: string = "pokemon", input: string, url?: string): Promise<any> => {
+const getBasicInfo = async (filter: string = "pokemon", input?: string, url?: string): Promise<any> => {
     const idOrName = input ? `/${input.toLowerCase()}` : "";
     const limitMax = 8;
     const limit = (input && filter !== "pokemon") ? "/?limit=1" : `/?limit=${limitMax}`;
@@ -209,7 +209,7 @@ export type ReturnCombinedDatas = CombinedDatas[];
  * @param input 
  * @returns 
  */
-const createCard = async (filter: string, input: string): Promise<any> => {
+const createCard = async (filter: string, input?: string): Promise<any> => {
     const pokemons = [];
     let pokemon, species, ev, weekness, newArray,
         abName = "", abEffect = "", oppTypes = [];

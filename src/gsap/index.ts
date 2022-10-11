@@ -4,6 +4,7 @@ import { gsap } from "gsap";
  * GSAP document
  * @version 3.11.2
  * @see https://greensock.com/docs/v3/GSAP
+ * @see https://greensock.com/react/
  */
 
 interface Position {

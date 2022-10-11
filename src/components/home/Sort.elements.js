@@ -4,6 +4,8 @@ export const SortStyles = styled.div`
     display: flex;
     align-items: center;
 
+    ${ props => console.log("props: ", props) }
+
     .select-box {
         width: 198px;
         position: relative;
@@ -13,10 +15,10 @@ export const SortStyles = styled.div`
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             height: 30px;
             padding: 0 15px;
-            border: 1px solid ${ props => props.theme.colors.gray3 };
+            color: ${ props => props.isLoaded ? props.theme.colors.normal : props.theme.colors.gray2 };
+            border: 1px solid ${ props => props.isLoaded ? props.theme.colors.gray3 : props.theme.colors.gray2};
             border-radius: 5px;
             cursor: pointer;
 
