@@ -78,25 +78,6 @@ export const CardStyles = styled.li`
                 font-size: ${ props => props.theme.font.descr };
                 text-align: center;
                 color: #ffffff;
-
-                &.bug       { background-color: ${ props => props.theme.symbols.bug } }
-                &.dragon    { background-color: ${ props => props.theme.symbols.dragon } }
-                &.Fairy     { background-color: ${ props => props.theme.symbols.Fairy } }
-                &.fire      { background-color: ${ props => props.theme.symbols.fire } }
-                &.ghost     { background-color: ${ props => props.theme.symbols.ghost } }
-                &.ground    { background-color: ${ props => props.theme.symbols.ground } }
-                &.normal    { background-color: ${ props => props.theme.symbols.normal }; color: #444444 }
-                &.psychic   { background-color: ${ props => props.theme.symbols.psychic } }
-                &.steel     { background-color: ${ props => props.theme.symbols.steel } }
-                &.dark      { background-color: ${ props => props.theme.symbols.dark } }
-                &.electric  { background-color: ${ props => props.theme.symbols.electric }; color: #444444 }
-                &.fighting  { background-color: ${ props => props.theme.symbols.fighting } }
-                &.flying    { background-color: ${ props => props.theme.symbols.flying } }
-                &.grass     { background-color: ${ props => props.theme.symbols.grass } }
-                &.ice       { background-color: ${ props => props.theme.symbols.ice }; color: #444444 }
-                &.poison    { background-color: ${ props => props.theme.symbols.poison } }
-                &.rock      { background-color: ${ props => props.theme.symbols.rock } }
-                &.water     { background-color: ${ props => props.theme.symbols.water } }
             }
         }
     }

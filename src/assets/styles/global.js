@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
   /* Normalize */
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { font-size: 16px;color: #444444; font-family: 'Inter', sans-serif;-webkit-font-smoothing: antialiased;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; }
+  body { font-size: 16px;color: #444444; font-family: 'Inter', sans-serif;-webkit-font-smoothing: antialiased;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;position: relative; }
   select { appearance:none;}
   select::-ms-expand { display:none;}
   input { outline: none; }
@@ -37,6 +37,25 @@ const GlobalStyle = createGlobalStyle`
   input[type="date"], 
   textarea { -webkit-appearance:none; -moz-appearance:none; appearance:none;outline:0;}
   textarea { resize: none;}
+
+  .bug       { background-color: ${ props => props.theme.symbols.bug } }
+  .dragon    { background-color: ${ props => props.theme.symbols.dragon } }
+  .Fairy     { background-color: ${ props => props.theme.symbols.Fairy } }
+  .fire      { background-color: ${ props => props.theme.symbols.fire } }
+  .ghost     { background-color: ${ props => props.theme.symbols.ghost } }
+  .ground    { background-color: ${ props => props.theme.symbols.ground } }
+  .normal    { background-color: ${ props => props.theme.symbols.normal }; color: #444444 }
+  .psychic   { background-color: ${ props => props.theme.symbols.psychic } }
+  .steel     { background-color: ${ props => props.theme.symbols.steel } }
+  .dark      { background-color: ${ props => props.theme.symbols.dark } }
+  .electric  { background-color: ${ props => props.theme.symbols.electric }; color: #444444 }
+  .fighting  { background-color: ${ props => props.theme.symbols.fighting } }
+  .flying    { background-color: ${ props => props.theme.symbols.flying } }
+  .grass     { background-color: ${ props => props.theme.symbols.grass } }
+  .ice       { background-color: ${ props => props.theme.symbols.ice }; color: #444444 }
+  .poison    { background-color: ${ props => props.theme.symbols.poison } }
+  .rock      { background-color: ${ props => props.theme.symbols.rock } }
+  .water     { background-color: ${ props => props.theme.symbols.water } }
 `
 
 export default GlobalStyle

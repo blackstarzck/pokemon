@@ -1,11 +1,38 @@
 import styled, { css } from "styled-components";
 
+const popupW = 898;     // 팝업 최대 너비
+const gridGap = 26;     // 그리드 갭
+const w50 = 50;         // 너비 50
+const mr60 = 110;       // margin-right 60
+
 export const DetailPopupStyles = styled.div`
     text-transform: capitalize;
 
+    .dimmedBg {
+        width: 100vw;
+        height: 100%;
+        position: fixed;
+        top: 0; left: 0;
+        background-color: rgba(0, 0, 0, .5);
+        backdrop-filter: blur(4px);
+    }
+
+    .container {
+        ${ props => props.step === "step1"
+            ? css`display: block; width: 356px; height: 356px; border-radius: 50%;`
+            : css`display: grid; width: ${`${popupW}px`};`
+        }
+        grid-template-columns: ${ `${(popupW/2) - (gridGap/2)}px ${(popupW/2) - (gridGap/2)}px` };
+        grid-gap: ${`${gridGap}px`};
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
     .wrapper { display: flex; }
 
-    section { padding: 20px; }
+    section { padding: 20px; overflow: hidden; }
 
     section.details-box {
         border-radius: 5px;
@@ -14,11 +41,12 @@ export const DetailPopupStyles = styled.div`
     }
 
     section.left {
-        width: 436px;
         position: relative;
+        ${ props => props.step === "step1" && css`width: 356px; height: 356px; border-radius: 50%;` };
 
         .name-wrapper {
             width: 100%;
+            visibility: ${ props => props.step === "step1" ? "hidden" : "visible"};
             position: absolute;
             top: 20px; left: 0;
             z-index: 2;
@@ -74,7 +102,8 @@ export const DetailPopupStyles = styled.div`
                 z-index: 1;
                 transition: all .2s ease;
                 border-radius: 50%;
-                background-color: green;
+                color: #ffffff;
+                outline: 1px solid red;
             }
         }
 
@@ -82,7 +111,6 @@ export const DetailPopupStyles = styled.div`
             width: 356px;
             height: 356px;
             border-radius: 50%;
-            background: red;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -91,11 +119,13 @@ export const DetailPopupStyles = styled.div`
             display: flex;
             justify-content: center;
             align-items: center;
+            outline: 1px solid green;
 
             img { width: 90%; }
         }
 
         .btn-wrapper {
+            visibility: ${ props => props.step === "step1" ? "hidden" : "visible"};
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -116,7 +146,8 @@ export const DetailPopupStyles = styled.div`
         }
     }
     section.right {
-        width: 436px;
+        ${ props => props.step === "step1" && css`visibility: hidden; display: none;` }
+
 
         h4.info-heading {
             font-size: 1.625rem;
@@ -129,6 +160,7 @@ export const DetailPopupStyles = styled.div`
         }
         article.about {
             p.descr {
+                text-transform: none;
                 color: ${ props => props.theme.colors.gray4 };
                 margin-top: 17px;
             }
@@ -187,6 +219,10 @@ export const DetailPopupStyles = styled.div`
         }
     }
     section.bottom {
+        ${ props => props.step === "step1" && css`visibility: hidden; display: none;` }
+        grid-column: 1/3;
+        padding-bottom: 54px;
+
         h4.info-heading {
             font-size: 2.25rem;
             font-weight: 800;
@@ -197,6 +233,7 @@ export const DetailPopupStyles = styled.div`
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 30px;
 
             ul { display: flex; }
         }
@@ -269,14 +306,19 @@ export const DetailPopupStyles = styled.div`
                 }
             }
 
-            &:not(:last-child) { margin-right: 60px; }
-            &::after {
+            &:not(:last-child) {
+                margin-right: ${`${mr60}px`};
+            }
+            &:not(:last-child)::after {
                 content: "";
-                width: 20px;
-                height: 20px;
-                background-color: red;
+                width: ${`${w50}px`};
+                height: ${`${w50}px`};
+                background: url("/icon/arrow-right.png") no-repeat center / contain;
                 position: absolute;
-                top: 0; right: -40px; bottom: 0; margin: auto;
+                top: 0;
+                right: ${ `${ ((w50 - mr60) / 2) - w50  }px` };
+                bottom: 0;
+                margin: auto;
             }
         }
     }
