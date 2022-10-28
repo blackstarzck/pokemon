@@ -6,7 +6,8 @@ import { RootState } from '../../store/reducers';
 import { CombinedDatas } from '../../api';
 import { Heading } from './Heading';
 import { search, ThunkDispatch } from '../../store/actions/search';
-import { DetailPopup } from './DetailPopup';
+import { DetailPopup } from './Popup/DetailPopup';
+
 
 let posY = 0;
 const root = document.getElementById("root") as HTMLElement;
