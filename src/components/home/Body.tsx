@@ -10,20 +10,6 @@ import { DetailPopup } from './Popup/DetailPopup';
 import { Pokemon } from '../../store/actions/detailPopup';
 import { PopupReducer } from '../../store/reducers/detailPopup';
 
-
-let posY = 0;
-const root = document.getElementById("root") as HTMLElement;
-const wHeight = window.innerHeight;
-const cHeight = root.offsetHeight;
-const endPos = Math.abs(wHeight - cHeight);
-
-window.onscroll = (evt) => {
-    posY = window.pageYOffset;
-    if(posY >= endPos){
-        console.log("페이지 최하단에 왔습니다~!", posY, endPos);
-    }
-}
-
 export interface Props {}
 
 export const Body: FC = (props: Props) => {

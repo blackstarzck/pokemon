@@ -5,7 +5,7 @@ export const IS_CLOSE = "popup/IS_CLOSE" as const;
 
 interface PopupDispatch {
     type: string,
-    payload: Pokemon
+    payload: Pokemon | null
 }
 
 export interface Pokemon {
@@ -33,7 +33,7 @@ export interface Pokemon {
     }[]
 }
 
-const setDetailPopup = (status: boolean, pokemon: Pokemon): PopupDispatch => {
+const setDetailPopup = (status: boolean, pokemon: Pokemon | null): PopupDispatch => {
     let type = status ? IS_OPEN : IS_CLOSE;
     let payload = pokemon
 
