@@ -14,23 +14,27 @@ export interface Props {
 
 export function DetailPopup (props: Props) {
     const contRef = useRef<HTMLDivElement>(null);
-    const leftRef = useRef<HTMLDivElement>(null);
     const app = useRef();
     const tl = useRef<GSAPTimeline>();
     const dispatch = useDispatch();
     
 
     useEffect(() => {
-        // let ctx = gsap.context(() => {
-        //     gsap.timeline()
-        //         .to(leftRef.current, { rotate: 360 })
-        //         .to(leftRef.current, { rotate: -360 });
-        // });
-    }, [contRef]);
+        const container = contRef.current as HTMLDivElement;
+        let ctx = gsap.context(() => {
+            gsap.timeline()
+                .fromTo(container.children, { opacity: 0, y: -10}, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    stagger: 0.2,
+                    ease: "back.in",
+                    onComplete: function(){}
+                })
+        });
 
-    useEffect(() => {
-        console.log("props.detail: ", props.details);
-    }, [props.details.type]);
+        console.log("contRef: ", contRef);
+    }, [contRef]);
 
     useEffect(() => {
         document.addEventListener("keydown", (e) => {
