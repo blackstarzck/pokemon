@@ -1,14 +1,14 @@
 import styled, { css } from "styled-components";
 
-export const popupW = 898;     // 팝업 최대 너비
-export const gridGap = 26;     // 그리드 갭
-export const w50 = 50;         // 너비 50
-export const mr60 = 110;       // margin-right 60
+export const popupW     = 898;  // 팝업 최대 너비
+export const gridGap    = 26;   // 그리드 갭
+export const w50        = 50;   // 너비 50
+export const mr60       = 110;  // margin-right 60
 
 export const DetailPopupStyles = styled.div`
     text-transform: capitalize;
 
-    .dimmedBg {
+.dimmedBg {
         width: 100vw;
         height: 100%;
         position: fixed;

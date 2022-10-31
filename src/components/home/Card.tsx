@@ -1,27 +1,36 @@
-import React, { FC, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { CardStyles } from './Cards.elements';
 import { CombinedDatas } from '../../api';
 import { animateCards } from '../../gsap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/reducers';
+import setDetailPopup, { Pokemon } from '../../store/actions/detailPopup';
 
 interface Props {
     loaded: boolean,
-    detail: CombinedDatas,
+    detail: Pokemon,
     delay: number
 }
 
 export const Card: FC<Props> = props => {
-    const cardRef = useRef<HTMLElement>(null);
+    const cardRef = useRef<HTMLLIElement>(null);
     const sort = useSelector((state: RootState) => state.sort);
+    const dispatch = useDispatch();
+
+    const handlePopup = useCallback(()=> {
+        const detail = props.detail;
+        console.log("선택한 포켓몬: ", detail);
+        
+        dispatch( setDetailPopup(true, detail) );
+    },[props.detail.id]);
 
     useEffect(() => {
-        const card = cardRef.current as HTMLElement;
+        const card = cardRef.current as HTMLLIElement;
         sort.isOpen || animateCards(card, props.delay);
     }, [sort]);
 
     useEffect(() => {
-        const card = cardRef.current as HTMLElement;
+        const card = cardRef.current as HTMLLIElement;
         animateCards(card, props.delay);
 
         console.log(props.detail.id + " 로드~!");
@@ -35,7 +44,7 @@ export const Card: FC<Props> = props => {
         );
     }
     return (
-        <CardStyles ref={cardRef} loaded={props.detail} >
+        <CardStyles ref={cardRef} loaded={props.detail} onClick={() => handlePopup()}>
             <div className="img-box">
                 <img src={props.detail.img} alt={props.detail.name} />
             </div>

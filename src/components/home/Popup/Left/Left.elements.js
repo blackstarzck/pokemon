@@ -30,11 +30,13 @@ export const LeftStyles = styled(SectionStyles)`
             font-size: 2.25rem;
             font-weight: 900;
             line-height: 44px;
+            color: #000000;
         }
         .number {
             font-size: 1.25rem;
             font-weight: 400;
-            color: ${ props => props.theme.colors.gray4 }
+            letter-spacing: -1px;
+            color: #000000;
         }
 
         li.type {
@@ -64,12 +66,11 @@ export const LeftStyles = styled(SectionStyles)`
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%) scale(2);
+                transform: translate(-50%, -50%) scale(4);
                 z-index: 1;
                 transition: all .2s ease;
                 border-radius: 50%;
                 color: #ffffff;
-                outline: 1px solid red;
             }
         }
 
@@ -85,7 +86,6 @@ export const LeftStyles = styled(SectionStyles)`
             display: flex;
             justify-content: center;
             align-items: center;
-            outline: 1px solid green;
 
             img { width: 90%; }
         }

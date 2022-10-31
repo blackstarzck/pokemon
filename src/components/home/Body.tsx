@@ -7,6 +7,8 @@ import { CombinedDatas } from '../../api';
 import { Heading } from './Heading';
 import { search, ThunkDispatch } from '../../store/actions/search';
 import { DetailPopup } from './Popup/DetailPopup';
+import { Pokemon } from '../../store/actions/detailPopup';
+import { PopupReducer } from '../../store/reducers/detailPopup';
 
 
 let posY = 0;
@@ -22,12 +24,12 @@ window.onscroll = (evt) => {
     }
 }
 
-export interface Props {
-}
+export interface Props {}
 
 export const Body: FC = (props: Props) => {
     const { data } = useSelector((state: RootState) => state.search);
     const { isLoaded } = useSelector((state: RootState) => state.loading);
+    const popup: PopupReducer = useSelector((state: RootState) => state.popup);
     const dispatch = useDispatch<ThunkDispatch>();
 
     useLayoutEffect(() => {
@@ -50,11 +52,11 @@ export const Body: FC = (props: Props) => {
                     { isLoaded
                         ? <li className="loading"><div className="square"></div></li>
                         : data.pokemons 
-                            ? data.pokemons.map((item: CombinedDatas, i: number) => <Card loaded={isLoaded} key={item.id} detail={item} delay={i * 0.1}/> )
+                            ? data.pokemons.map((item: Pokemon, i: number) => <Card loaded={isLoaded} key={item.id} detail={item} delay={i * 0.1}/> )
                             : <li className="loading"><div className="square"></div></li> }
                 </ul>
             </div>
-            <DetailPopup />
+            { popup.payload && <DetailPopup details={popup.payload}/> }
         </BodyStyles>
     );
 }

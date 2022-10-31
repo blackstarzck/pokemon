@@ -40,7 +40,7 @@ export const RightStyles = styled(SectionStyles)`
                 display: flex;
                 align-items: center;
 
-                i.label { display: block; width: 172px; }
+                i.label { display: block; width: 172px; text-transform: uppercase; }
                 .exp-bar {
                     width: calc(100% - 172px);
                     height: 10px;

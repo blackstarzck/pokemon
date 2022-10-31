@@ -100,7 +100,7 @@ const getBasicInfo = async (filter: string = "pokemon", input?: string, url?: st
  * @param url       : fetch 함수에 들어갈 수 있는 url 주소입니다.
  * @returns name, id, order, img, height, weight, abilities, stats, types
  */
-const getPokemonDatas = async (param: number, url?: string): Promise<Pokemon> => {
+export const getPokemonDatas = async (param: number | null, url?: string): Promise<Pokemon> => {
     const newUrl = url ? url : `${baseURL}pokemon/${param}`
     const data = await fetchUrl(newUrl);
     const { height, weight, name, id, order } = data; // height unit: decimetres to meters (h / 10), weight unit: hectograms to kilograms ( w / 10 )
@@ -159,12 +159,33 @@ const getEvolutionChain = async (url: string): Promise<Evolution> => {
     const ev_chain = [];
 
     if(chain && chain.evolves_to.length > 0){
-        ev_chain.push({ name: chain.species.name, img: newStr(chain.species.url) });
-        ev_chain.push({ name: chain.evolves_to[0].species.name, img: newStr(chain.evolves_to[0].species.url) });
+        const dataA = await getPokemonDatas(chain.species.url.replace(`${baseURL}pokemon-species/`, "").replace(/[^0-9]/g, ""));
+        ev_chain.push({
+            name: chain.species.name,
+            img: newStr(chain.species.url),
+            types: dataA.types,
+            id: addZeros(dataA.id)
+        });
+        const dataB = await getPokemonDatas(chain.evolves_to[0].species.url.replace(`${baseURL}pokemon-species/`, "").replace(/[^0-9]/g, ""));
+        ev_chain.push({
+            name: chain.evolves_to[0].species.name,
+            img: newStr(chain.evolves_to[0].species.url),
+            types: dataB.types,
+            id: addZeros(dataB.id)
+        });
+
         if(chain.evolves_to[0].evolves_to.length > 0){
-            ev_chain.push({ name: chain.evolves_to[0].evolves_to[0].species.name, img: newStr(chain.evolves_to[0].evolves_to[0].species.url) });
+            const dataC = await getPokemonDatas(chain.evolves_to[0].evolves_to[0].species.url.replace(`${baseURL}pokemon-species/`, "").replace(/[^0-9]/g, ""));
+            ev_chain.push({
+                name: chain.evolves_to[0].evolves_to[0].species.name,
+                img: newStr(chain.evolves_to[0].evolves_to[0].species.url),
+                types: dataC.types,
+                id: addZeros(dataC.id)
+            });
         }
     }
+
+    console.log("ev_chain: ", ev_chain);
     return { ev_chain };
 }
 
@@ -216,6 +237,7 @@ const createCard = async (filter: string, input?: string): Promise<any> => {
     let lists = await getBasicInfo(filter, input);
 
     console.log("★★lists: ", lists);
+
     if(!lists) return false;
     if(filter === "ability" && input){
         const { ability, description } = await getAbilityDescr(input);

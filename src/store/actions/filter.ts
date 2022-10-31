@@ -13,7 +13,7 @@ const setFilterItem = (filter: string): FilterDispatch => {
     if(filter === "ability") type = FILTER_ABILITY;
     if(filter === "type") type = FILTER_TYPE; 
     payload = filter;
-    console.log(type, payload);
+
     return { type, payload };
 }
 
