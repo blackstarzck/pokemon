@@ -8,6 +8,18 @@ export const BodyStyles = styled.section`
         margin-top: 110px;
     }
 
+    .loading {
+        width: 100px;
+
+        .square {
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            background-color: ${ props => props.theme.colors.primary };
+            animation: loadingG 1.5s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+        }
+    }
+
     .section-body {
         .cards-wrapper {
             margin-top: 36px;
@@ -25,18 +37,6 @@ export const BodyStyles = styled.section`
             }
             @media screen and (max-width: 410px) {
                 grid-template-columns: repeat(1, 1fr);
-            }
-
-            .loading {
-                width: 100px;
-
-                .square {
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 5px;
-                    background-color: ${ props => props.theme.colors.primary };
-                    animation: loadingG 1.5s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
-                }
             }
         }
     }

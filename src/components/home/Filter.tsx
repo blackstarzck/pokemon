@@ -4,8 +4,7 @@ import setFilterItem from '../../store/actions/filter';
 import { RootState } from '../../store/reducers';
 import { FilterStyles } from './Filter.elements';
 
-export interface Props {
-}
+export interface Props {}
 
 export const Filter: FC = (props: Props) => {
   const { filter } = useSelector((state: RootState) => state.filter);

@@ -3,9 +3,7 @@ import styled, { css } from "styled-components";
 export const SortStyles = styled.div`
     display: flex;
     align-items: center;
-
-    ${ props => console.log("props: ", props) }
-
+    
     .select-box {
         width: 198px;
         position: relative;

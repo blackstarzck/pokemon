@@ -9,15 +9,14 @@ import { RootState } from '../../../store/reducers';
 import setDetailPopup, { Pokemon } from '../../../store/actions/detailPopup';
 
 export interface Props {
-    details: any
+    details: Pokemon,
+    pokemons: Pokemon[]
 }
 
 export function DetailPopup (props: Props) {
     const contRef = useRef<HTMLDivElement>(null);
-    const app = useRef();
     const tl = useRef<GSAPTimeline>();
     const dispatch = useDispatch();
-    
 
     useEffect(() => {
         const container = contRef.current as HTMLDivElement;
@@ -32,8 +31,6 @@ export function DetailPopup (props: Props) {
                     onComplete: function(){}
                 })
         });
-
-        console.log("contRef: ", contRef);
     }, [contRef]);
 
     useEffect(() => {
@@ -53,7 +50,7 @@ export function DetailPopup (props: Props) {
         <DetailPopupStyles step={""}>
             <div onClick={() => closePopup()} className="dimmedBg"></div>
             <div ref={contRef} className="container">
-                <Left details={props.details} />
+                <Left details={props.details} pokemons={props.pokemons}/>
                 <Right details={props.details} />
                 <Bottom details={props.details} />
             </div>

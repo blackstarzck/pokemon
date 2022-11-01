@@ -184,8 +184,6 @@ const getEvolutionChain = async (url: string): Promise<Evolution> => {
             });
         }
     }
-
-    console.log("ev_chain: ", ev_chain);
     return { ev_chain };
 }
 
@@ -300,7 +298,7 @@ const createCard = async (filter: string, input?: string): Promise<any> => {
     return { pokemons, abName, abEffect, oppTypes };
 }
 
-const addZeros = (param: number) => {
+export const addZeros = (param: number): string => {
     let id = String(param);
     let newId = id;
     let length: number = 0;

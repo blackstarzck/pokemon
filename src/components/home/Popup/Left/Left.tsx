@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-solid-svg-icons';
 import { LeftStyles } from './Left.elements';
+import { Pokemon } from '../../../../store/actions/detailPopup';
+import { addZeros } from '../../../../api';
 
 export interface Props {
     details: {
@@ -10,10 +12,33 @@ export interface Props {
         types: string[],    // Left
         img: string,        // Left
     }
+    pokemons: Pokemon[]
 }
 
 export function Left (props: Props) {
     const { name, id, types, img } = props.details;
+
+    const handlePrevNext = (id: string): void => {
+        console.log("id: ", id);
+        console.log("pokemon: ", typeof props.pokemons, props.pokemons);
+
+    }
+
+    const setPokemonId = (state: string, id: string, range: Pokemon[]): string => {
+        const idx = Number(id.replace(/[^0-9]/g, ""));
+        const newIdx: number = (state === "prev") ? idx - 1 : idx + 1;
+        let newid: string = addZeros(newIdx);
+
+        for(const pokemon of range){
+
+        }
+
+        return newid;
+    }
+
+    useEffect(() => {
+
+    }, [props.pokemons]);
 
     return (
     <LeftStyles className="left details-box">
@@ -36,8 +61,8 @@ export function Left (props: Props) {
         <div className="bgc"><div className={`inner-circle ${types[0]}`}></div></div>
         
         <div className="btn-wrapper">
-            <button className="prev"><FontAwesomeIcon icon={faChevronLeft} /></button>
-            <button className="next"><FontAwesomeIcon icon={faChevronRight} /></button>
+            <button onClick={() => handlePrevNext(setPokemonId("prev", id, props.pokemons))} className="prev"><FontAwesomeIcon icon={faChevronLeft} /></button>
+            <button onClick={() => handlePrevNext(setPokemonId("next", id, props.pokemons))} className="next"><FontAwesomeIcon icon={faChevronRight} /></button>
         </div>
     </LeftStyles>
     );

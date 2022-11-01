@@ -34,14 +34,12 @@ export const Sort: FC = memo(props => {
     }, [sort.isOpen]);
 
     useEffect(() => {
-        console.log("sort: ", sort);
         if(!sort.isOpen){
             const elem = selected.current as HTMLSpanElement;
             elem.innerText = sort.sortType;
         }
     }, [sort.isOpen]);
 
-    console.log("data: ", data.pokemons);
     console.log("%c■■■■■■■■■■■■■■■■■■■■■ 렌더: Sort ■■■■■■■■■■■■■■■■■■■■■", "color: gray");
 
     return (

@@ -5,8 +5,7 @@ import { RootState } from '../../store/reducers';
 import { HeadingStyles } from './Heading.elements';
 import { Sort } from './Sort';
 
-export interface Props {
-}
+export interface Props {}
 
 export const Heading: FC = memo((props: Props) => {
     const { filter } = useSelector((state: RootState) => state.filter);

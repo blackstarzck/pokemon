@@ -8,13 +8,6 @@ const wHeight = window.innerHeight;
 const cHeight = root.offsetHeight;
 const endPos = Math.abs(wHeight - cHeight);
 
-window.onscroll = (evt) => {
-    posY = window.pageYOffset;
-    if(posY >= endPos){
-        console.log("페이지 최하단에 왔습니다~!", posY, endPos);
-    }
-}
-
 export interface Props {}
 
 export const Home: FC = (props: Props) => {

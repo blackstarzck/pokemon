@@ -33,10 +33,9 @@ export const search = (filter: string, input?: string) => async (dispatch: Dispa
     dispatch({ type: SEARCH_INIT });
     try{
         const data = await createCard(filter, input);
-        dispatch({
-            type: SEARCH_SUCCESS,
-            payload: data
-        });
+        if(!data) dispatch({ type: SEARCH_FAILURE }); 
+        if(data) dispatch({ type: SEARCH_SUCCESS, payload: data });
+        console.log("search data: ", data);
     }catch(e){
         dispatch({
             type: SEARCH_FAILURE

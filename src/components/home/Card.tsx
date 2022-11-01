@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import React, { FC, memo, useCallback, useEffect, useRef } from 'react';
 import { CardStyles } from './Cards.elements';
 import { CombinedDatas } from '../../api';
 import { animateCards } from '../../gsap';
@@ -12,14 +12,14 @@ interface Props {
     delay: number
 }
 
-export const Card: FC<Props> = props => {
+export const Card: FC<Props> = memo(props => {
     const cardRef = useRef<HTMLLIElement>(null);
     const sort = useSelector((state: RootState) => state.sort);
     const dispatch = useDispatch();
 
     const handlePopup = useCallback(()=> {
         const detail = props.detail;
-        console.log("선택한 포켓몬: ", detail);
+        // console.log("선택한 포켓몬: ", detail);
         
         dispatch( setDetailPopup(true, detail) );
     },[props.detail.id]);
@@ -33,7 +33,7 @@ export const Card: FC<Props> = props => {
         const card = cardRef.current as HTMLLIElement;
         animateCards(card, props.delay);
 
-        console.log(props.detail.id + " 로드~!");
+        console.log(props.detail.id + " 로드~!", );
     }, []);
 
     if(!props.detail){
@@ -57,5 +57,5 @@ export const Card: FC<Props> = props => {
             </div>
         </CardStyles>
     );
-}
+})
 
