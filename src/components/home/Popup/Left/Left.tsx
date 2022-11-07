@@ -60,10 +60,10 @@ export function Left (props: Props) {
         {/* 배경 */}
         <div className="bgc"><div className={`inner-circle ${types[0]}`}></div></div>
         
-        <div className="btn-wrapper">
+        {/* <div className="btn-wrapper">
             <button onClick={() => handlePrevNext(setPokemonId("prev", id, props.pokemons))} className="prev"><FontAwesomeIcon icon={faChevronLeft} /></button>
             <button onClick={() => handlePrevNext(setPokemonId("next", id, props.pokemons))} className="next"><FontAwesomeIcon icon={faChevronRight} /></button>
-        </div>
+        </div> */}
     </LeftStyles>
     );
 }
